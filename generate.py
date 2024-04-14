@@ -62,9 +62,9 @@ def iterative_adversarial_attack(image, epsilon, target_class, num_steps=10):
 
     return adversarial_image
 
-# generate and display an adversarial image
+# generate, display, and save an adversarial image
 def generate_adversarial_image(image_path, epsilon, target_class):
-    image = load_image(f"sample_images/{image_path}")
+    image = load_image(image_path)
     image.requires_grad = True
     
     # forward pass the original image through the model
@@ -86,22 +86,27 @@ def generate_adversarial_image(image_path, epsilon, target_class):
     adversarial_pred = adversarial_output.max(1, keepdim=True)[1]
     adversarial_conf = adversarial_probabilities.max().item() * 100
 
-    # now display image(s):
+    '''
+    Now let's save the output image and plot the original image, 
+    the noise, and the adversarial image for side by side comparison.
+    '''
 
     # convert tensor images to PIL images
     original_image_pil = transforms.ToPILImage()(image.squeeze(0))
-    # normalize noise image for visualization
-    noise_image_pil = transforms.ToPILImage()(0.5 + 0.5 * noise.squeeze(0))
+    noise_image_pil = transforms.ToPILImage()(noise.squeeze(0))
     adversarial_image_pil = transforms.ToPILImage()(adversarial_image.squeeze(0))
+
+    # save the adversarial image as final output
+    adversarial_image_pil.save("adversarial_output_image.png")
     
     # parse the class names
     original_class_name = classes[original_pred.item()].split(',')[0].replace("'", "").strip()
     adversarial_class_name = classes[adversarial_pred.item()].split(',')[0].replace("'", "").strip()
 
-    # plot results
+    # plot images and model predictions side by side for comparison
     fig, axs = plt.subplots(1, 3, figsize=(12, 4))
     axs[0].imshow(original_image_pil)
-    axs[0].title.set_text(f"Original: {original_class_name} ({original_conf:.2f}%)")
+    axs[0].title.set_text(f"Original: {original_class_name}\n({original_conf:.2f}% confidence)")
     axs[0].axis('off')
     
     axs[1].imshow(noise_image_pil, cmap='gray')
@@ -109,9 +114,9 @@ def generate_adversarial_image(image_path, epsilon, target_class):
     axs[1].axis('off')
 
     axs[2].imshow(adversarial_image_pil)
-    axs[2].title.set_text(f"Adversarial: {adversarial_class_name} ({adversarial_conf:.2f}%)")
+    axs[2].title.set_text(f"Adversarial: {adversarial_class_name}\n({adversarial_conf:.2f}% confidence)")
     axs[2].axis('off')
 
     plt.show()
 
-generate_adversarial_image(args.image_path, epsilon=0.1, target_class=args.target_class)
+generate_adversarial_image(args.image_path, epsilon=0.02, target_class=args.target_class)
