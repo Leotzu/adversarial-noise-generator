@@ -62,9 +62,9 @@ def iterative_adversarial_attack(image, epsilon, target_class, num_steps=10):
 
     return adversarial_image
 
-# generate an adversarial example
+# generate and display an adversarial image
 def generate_adversarial_image(image_path, epsilon, target_class):
-    image = load_image(image_path)
+    image = load_image(f"sample_images/{image_path}")
     image.requires_grad = True
     
     # forward pass the original image through the model
@@ -113,6 +113,5 @@ def generate_adversarial_image(image_path, epsilon, target_class):
     axs[2].axis('off')
 
     plt.show()
-
 
 generate_adversarial_image(args.image_path, epsilon=0.1, target_class=args.target_class)
