@@ -4,25 +4,29 @@ This is a tool designed to manipulate images such that they look roughly the sam
 
 ## Usage Instructions
 
-### Setup
+### Prepare Images
 
-1. **Prepare Images**: 
-   - You can either use your own images by placing them in the `sample_images` directory.
-   - Alternatively, use the default images provided in the `sample_images` folder.
+You can either download and use your own images or use the default images provided in the `sample_images` folder. Any jpg or png will work.
 
 ### Generate Adversarial Image
 
 ```bash
-python generate.py <image_name> <target_class_number>
+python generate.py <image_path> <target_class_number>
 ```
 
-- **image_name**: the name of the image file you wish to alter.
+- **image_path**: the path of the image you wish to alter.
 - **target_class_number**: the numerical identifier for the target class. The class numbers are mapped in the imagenet_classes.txt.
 
 Example:
 
 ```bash
-python generate.py panda.jpg 368
+python generate.py sample_images/panda.jpg 368
 ```
 
-This command will modify the panda.jpg image so that it's classified as a Gibbon (class number 368) by the model.
+This command will modify the panda image so that it's classified as a Gibbon (class number 368) by the model.
+
+![Example Image](result_examples/panda_gibbon.png)
+
+### Output
+
+This tool will save the adversarial example image (adversarial_output_image.png) as the final output. Additionally, it will plot 3 images side by side for comparison: the original image, the adversarial noise, and the final adversarial image. 
