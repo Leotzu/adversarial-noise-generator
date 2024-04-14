@@ -20,12 +20,12 @@ python generate.py <image_path> <target_class_number>
 Example:
 
 ```bash
-python generate.py sample_images/panda.jpg 368
+python generate.py sample_images/albatross.jpg 849
 ```
 
-This command will modify the panda image so that it's classified as a Gibbon (class number 368) by the model.
+This command will modify the albatross image so that it's classified as a teapot (class number 849) by the model.
 
-![Example Image](result_examples/panda_gibbon.png)
+![Example Image](result_examples/albatross_teapot.png)
 
 ### Output
 
